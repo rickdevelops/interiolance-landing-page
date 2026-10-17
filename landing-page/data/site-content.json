@@ -1,0 +1,88 @@
+{
+  "page_title": "Interiolance Landing Page",
+  "page_url": "https://interiolance.in/landing-page",
+  "meta_description": "This page is the Gateway to all other Digital platforms!",
+  "canvas": {
+    "width": 1366,
+    "height": 768,
+    "background": "#fff7ef"
+  },
+  "brand": "INTERIOLANCE",
+  "tagline": "Design to make it Divine",
+  "contact": {
+    "phone": "+917980314340",
+    "email": "interiolance@gmail.com"
+  },
+  "links": [
+    {
+      "label": "",
+      "url": "https://forms.gle/v94qBWnh7hxAthor6"
+    },
+    {
+      "label": "book a call",
+      "url": "https://forms.gle/v94qBWnh7hxAthor6"
+    },
+    {
+      "label": "",
+      "url": "https://maps.app.goo.gl/uWN8ZstGS9riXZTt5"
+    },
+    {
+      "label": "Way to OFFICE",
+      "url": "https://maps.app.goo.gl/uWN8ZstGS9riXZTt5"
+    },
+    {
+      "label": "",
+      "url": "https://www.facebook.com/Interiolance"
+    },
+    {
+      "label": "FACEBOOK",
+      "url": "https://www.facebook.com/Interiolance"
+    },
+    {
+      "label": "",
+      "url": "https://www.instagram.com/interiolance?igsh=eW11NDJ0bzZkbThj&utm_source=qr"
+    },
+    {
+      "label": "INSTAGRAM",
+      "url": "https://www.instagram.com/interiolance?igsh=eW11NDJ0bzZkbThj&utm_source=qr"
+    },
+    {
+      "label": "",
+      "url": "mailto:interiolance@gmail.com"
+    },
+    {
+      "label": "YOUTUBE",
+      "url": "https://youtube.com/@interiolance?si=PGb9g3KjiF2tGZPr"
+    },
+    {
+      "label": "",
+      "url": "tel:+917980314340"
+    },
+    {
+      "label": "CALL US",
+      "url": "tel:+917980314340"
+    },
+    {
+      "label": "WHATSAPP",
+      "url": "https://wa.me/+917980314340"
+    },
+    {
+      "label": "mail us",
+      "url": "mailto:interiolance@gmail.com"
+    }
+  ],
+  "fonts": [
+    "Arimo",
+    "Edo",
+    "Forum",
+    "Lato",
+    "Open Sans"
+  ],
+  "media_variants": 18,
+  "font_files": 8,
+  "capture_notes": [
+    "The HTML is a saved browser snapshot, not the original source repository.",
+    "The sibling browser-export asset directory was not included in the supplied file.",
+    "Some img elements reference blob: URLs, which are temporary browser URLs and cannot be restored from this HTML alone."
+  ]
+}

@@ -1,11 +1,22 @@
-<<<<<<< HEAD
-# Interiolance Landing Page — editable HTML/CSS/JS rebuild
+# INTERIOLANCE — interior design studio website template
 
-This is a self-contained rebuild based on the supplied browser-saved HTML for `https://interiolance.in/landing-page` and the two images supplied in this conversation. It recreates the original page's full-bleed interior photograph, centered Interiolance logo and title, tagline, and eight pill-shaped link buttons.
+A responsive, editable static website for INTERIOLANCE, designed around the supplied brand logo and warm interior photography.
+
+## Pages
+- `index.html` — homepage and studio overview
+- `services.html` — editable interior design services and process
+- `projects.html` — image-led inspiration gallery (sample stock imagery, not represented as completed client projects)
+- `about.html` — studio philosophy and design principles
+- `faqs.html` — accessible FAQ accordions
+- `contact.html` — discovery-call shortcuts and project enquiry form
+- `styles.css` — responsive design system and layouts
+- `script.js` — mobile navigation, scroll effects, FAQ accordions, demo form status and footer year
+- `assets/interiolance-logo.png` — cropped, transparent-background horizontal lockup made from the latest supplied logo artwork
+- `assets/interiolance-mark.png` — original multicolour standalone mark, retained as the browser favicon
+- `assets/hero-interior.jpg` — supplied warm interior background image
 
 ## Run locally
-
-No build tools or package installation are needed. Open `index.html` in a browser, or run a local server in this directory:
+No build step or dependencies are required. In this folder run:
 
 ```bash
 python3 -m http.server 8000
@@ -13,35 +24,25 @@ python3 -m http.server 8000
 
 Then visit `http://localhost:8000`.
 
-## Project contents
+## Direct contact links
+- **Book a Call:** https://forms.gle/v94qBWnh7hxAthor6
+- **WhatsApp:** https://wa.me/917980314340
+- **Call:** +91 79803 14340
+- **Instagram:** https://www.instagram.com/interiolance/
+- **Email:** interiolance@gmail.com
 
-```text
-index.html                         Main page markup
-styles.css                         Responsive styling and layout
-script.js                          Small pointer/tap interaction
-assets/original/hero.jpg           Supplied interior photograph (1800 × 1285)
-assets/original/logo.png           Supplied transparent logo image (380 × 425)
-source/Interiolance Landing Page.html  Browser-saved source snapshot
- data/canva-bootstrap.json         Canva page metadata embedded in the snapshot
- data/assets-manifest.json         Media/font manifest extracted from the snapshot
- data/site-content.json            Recovered page text and links
- data/saved-html-resources.json    Referenced resources from the saved page
- tools/download_original_assets.py Optional public-asset retrieval attempt
-```
+These direct links are based on the contact details in the original website files previously supplied. Please verify them before publishing.
 
-## Page links
+## Before launch
+1. **Logo:** The header and footer now use `assets/interiolance-logo.png`, the full lockup cropped from the most recently supplied logo image. The original standalone icon remains the favicon.
+2. **Images:** The hero background is local. Most secondary sample photos load from the Unsplash CDN and require an internet connection. These are illustrative references; replace them with owned or appropriately licensed photography before public launch, especially for the project gallery.
+3. **Booking and contact:** “Book a Call” opens the studio's existing Google Form in a new tab. WhatsApp, Instagram, Call and Email links are integrated in the utility bar, contact page, footer and/or mobile quick-action dock. Confirm the details are still correct.
+4. **Project enquiry form:** The local form currently shows a demo confirmation only; it does not transmit or store submissions. Connect it to an inbox, CRM or form endpoint and add a privacy notice before collecting customer data.
+5. **Business details:** Add verified service locations, fees, timelines, studio/founder details, credentials and real case studies. Service descriptions and budget selectors are editable examples.
+6. **Honest conversion:** Calls to action make the discovery process easy to find and explain what to expect without fake scarcity, fabricated reviews or misleading claims.
 
-The page preserves the links discovered in the saved source: Book a call, Way to Office, WhatsApp, Facebook, Instagram, YouTube, email, and telephone.
-
-## Accuracy note
-
-The layout and copy are grounded in the supplied saved HTML, and the photo/logo files are the images supplied for this rebuild. I could not fetch and compare a fresh screenshot of the live host during this build because DNS/network access to `interiolance.in` was unavailable in the execution environment. The original Canva CSS/font/runtime bundles and some temporary `blob:` images were not included in the saved HTML export, so this is a close editable reconstruction—not a guarantee of pixel-for-pixel identity with every desktop/mobile rendering of the live site.
-
-To achieve an exact match, provide a full browser “Save page, complete” export (HTML plus its `Interiolance Landing Page_files` folder) or a fresh full-page screenshot from both desktop and mobile.
-
-## Attribution
-
-Please confirm you have permission to reuse the branding, photography, and any fonts before republishing the site.
-=======
-# interiolance-landing-page
->>>>>>> 07a070e20b9d1032f4d7850bd7037c55c2af863c
+## Design details
+- Warm taupe, sand and cream palette coordinated with the supplied hero image
+- Exact supplied brand artwork used as a full logo lockup in the header and footer
+- Book a Call, WhatsApp, Instagram and Call shortcuts in the utility bar and mobile contact dock
+- Responsive navigation, accessible focus states, reduced-motion support and keyboard-friendly FAQ controls

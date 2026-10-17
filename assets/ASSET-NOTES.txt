@@ -1,0 +1,10 @@
+INTERIOLANCE-MARK.PNG
+Supplied multicolour brand mark copied from the existing project assets and placed without redrawing or recolouring.
+
+HERO-INTERIOR.JPG
+Supplied interior background photograph from the existing project assets.
+
+Other page imagery uses distinct temporary Unsplash CDN URLs in the HTML. Replace with licensed / owned images before publishing; internet required to load them.
+
+INTERIOLANCE-LOGO.PNG
+Website-ready horizontal lockup made by tightly cropping the latest user-supplied logo image and removing the white canvas. Original logo colors and artwork are retained; use this in the header and footer.
