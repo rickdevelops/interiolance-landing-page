@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Interiolance Landing Page — editable HTML/CSS/JS rebuild
 
 This is a self-contained rebuild based on the supplied browser-saved HTML for `https://interiolance.in/landing-page` and the two images supplied in this conversation. It recreates the original page's full-bleed interior photograph, centered Interiolance logo and title, tagline, and eight pill-shaped link buttons.
@@ -41,3 +42,6 @@ To achieve an exact match, provide a full browser “Save page, complete” expo
 ## Attribution
 
 Please confirm you have permission to reuse the branding, photography, and any fonts before republishing the site.
+=======
+# interiolance-landing-page
+>>>>>>> 07a070e20b9d1032f4d7850bd7037c55c2af863c
