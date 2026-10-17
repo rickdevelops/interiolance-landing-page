@@ -6,6 +6,33 @@
   <meta name="theme-color" content="#fff7ef">
   <meta name="description" content="Quick links to INTERIOLANCE and an easy way to explore our interior design studio, services and work.">
   <title>INTERIOLANCE | Quick Links & Studio</title>
+  <!--
+    GitHub Pages normally adds a trailing slash to directory URLs. Set a stable
+    asset base first, then keep the public URL clean (no /index.html or slash).
+    The repository prefix is detected from the current URL, so root deployments
+    continue to work too.
+  -->
+  <script>
+    (function () {
+      const pathname = window.location.pathname;
+      const marker = "/landing-page";
+      const routeIndex = pathname.lastIndexOf(marker);
+      if (routeIndex < 0) return;
+
+      const routeSuffix = pathname.slice(routeIndex);
+      const landingRoutes = ["/landing-page", "/landing-page/", "/landing-page/index.html"];
+      if (!landingRoutes.includes(routeSuffix)) return;
+
+      const siteRoot = pathname.slice(0, routeIndex);
+      const base = document.createElement("base");
+      base.href = `${siteRoot}/landing-page/`;
+      document.head.appendChild(base);
+
+      if (routeSuffix !== "/landing-page") {
+        history.replaceState(null, "", `${siteRoot}/landing-page${window.location.search}${window.location.hash}`);
+      }
+    })();
+  </script>
   <link rel="preload" as="image" href="assets/original/hero.jpg">
   <link rel="preload" as="image" href="assets/original/logo.png">
   <link rel="stylesheet" href="styles.css">
@@ -34,19 +61,19 @@
       </nav>
 
       <div class="site-discovery" aria-label="Explore the INTERIOLANCE website">
-        <a class="explore-main" href="/" aria-label="Visit the main INTERIOLANCE website">Explore our website <span aria-hidden="true">↗</span></a>
+        <a class="explore-main" href="../" aria-label="Visit the main INTERIOLANCE website">Explore our website <span aria-hidden="true">↗</span></a>
         <button class="discover-toggle" type="button" aria-expanded="false" aria-controls="discover-panel">Get to know us <span class="toggle-symbol" aria-hidden="true">＋</span></button>
         <section class="discover-panel" id="discover-panel" hidden>
           <p class="discover-eyebrow">MORE THAN A LINK PAGE</p>
           <h2>Thoughtful spaces. Personal by design.</h2>
           <p>Discover how we bring your ideas to life through considered interior design, practical planning and details that make a space feel like yours.</p>
           <div class="discover-links">
-            <a href="/services.html"><span>01</span> Our services <b aria-hidden="true">↗</b></a>
-            <a href="/projects.html"><span>02</span> Design inspiration <b aria-hidden="true">↗</b></a>
-            <a href="/about.html"><span>03</span> About the studio <b aria-hidden="true">↗</b></a>
-            <a href="/faqs.html"><span>04</span> FAQs <b aria-hidden="true">↗</b></a>
+            <a href="../services.html"><span>01</span> Our services <b aria-hidden="true">↗</b></a>
+            <a href="../projects.html"><span>02</span> Design inspiration <b aria-hidden="true">↗</b></a>
+            <a href="../about.html"><span>03</span> About the studio <b aria-hidden="true">↗</b></a>
+            <a href="../faqs.html"><span>04</span> FAQs <b aria-hidden="true">↗</b></a>
           </div>
-          <a class="discover-contact" href="/contact.html">Tell us about your project <span aria-hidden="true">→</span></a>
+          <a class="discover-contact" href="../contact.html">Tell us about your project <span aria-hidden="true">→</span></a>
         </section>
       </div>
     </div>

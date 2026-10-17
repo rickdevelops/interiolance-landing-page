@@ -46,3 +46,6 @@ These direct links are based on the contact details in the original website file
 - Exact supplied brand artwork used as a full logo lockup in the header and footer
 - Book a Call, WhatsApp, Instagram and Call shortcuts in the utility bar and mobile contact dock
 - Responsive navigation, accessible focus states, reduced-motion support and keyboard-friendly FAQ controls
+
+
+- `landing-page/index.html` — quick links page. Public route: `/landing-page` (clean URL; no need to append `index.html`).
