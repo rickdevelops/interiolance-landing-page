@@ -1,0 +1,223 @@
+[
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/56e9fbe53b6fb37d.ltr.css"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/static_font_4.ltr.css"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "preload"
+    ],
+    "as": "script",
+    "url": "./Interiolance Landing Page_files/4983a227d0ae200b.runtime.js.download"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "preload"
+    ],
+    "as": "script",
+    "url": "./Interiolance Landing Page_files/278d4b1e1c63a0ab.s4le6a.vendor.js.download"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "preload"
+    ],
+    "as": "script",
+    "url": "./Interiolance Landing Page_files/33a3836b5a9b8251.vendor.js.download"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "preload"
+    ],
+    "as": "script",
+    "url": "./Interiolance Landing Page_files/4c13477c2b270832.strings.js.download"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "preload"
+    ],
+    "as": "script",
+    "url": "./Interiolance Landing Page_files/a6d618b67d38b489.en-IN.js.download"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "preload"
+    ],
+    "as": "script",
+    "url": "./Interiolance Landing Page_files/b3ca7422051369d0.js.download"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "shortcut",
+      "icon"
+    ],
+    "as": null,
+    "url": "https://interiolance.in/landing-page/_assets/images/2d0b56e7e51cf11036ad8734bdb67e2d.png"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "icon"
+    ],
+    "as": null,
+    "url": "https://interiolance.in/landing-page/_assets/images/e53c4bd8da5e491d9ab09e7cf0daf874.png"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "apple-touch-icon"
+    ],
+    "as": null,
+    "url": "https://interiolance.in/landing-page/_assets/images/725b756a69a7d4c235070e51acd85560.png"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/06b1e480f5fc0960.ltr.css"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/28f64f5a77f6500c.ltr.css"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/4b869a0c4034a3e7.ltr.css"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/b32c1410d840135e.ltr.css"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/697dcbbb3c091530.ltr.css"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/c627ef89c1764c44.ltr.css"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/3409e8e504c69dd2.ltr.css"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/6dcf592a099575f4.ltr.css"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/49165a5d963019da.ltr.css"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/39e3c53b3623e916.ltr.css"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/6ef534890ea95fd1.ltr.css"
+  },
+  {
+    "tag": "link",
+    "rel": [
+      "stylesheet"
+    ],
+    "as": null,
+    "url": "./Interiolance Landing Page_files/4b40b65766f3fbde.ltr.css"
+  },
+  {
+    "tag": "script",
+    "rel": null,
+    "as": null,
+    "url": "./Interiolance Landing Page_files/4983a227d0ae200b.runtime.js.download"
+  },
+  {
+    "tag": "script",
+    "rel": null,
+    "as": null,
+    "url": "./Interiolance Landing Page_files/278d4b1e1c63a0ab.s4le6a.vendor.js.download"
+  },
+  {
+    "tag": "script",
+    "rel": null,
+    "as": null,
+    "url": "./Interiolance Landing Page_files/33a3836b5a9b8251.vendor.js.download"
+  },
+  {
+    "tag": "script",
+    "rel": null,
+    "as": null,
+    "url": "./Interiolance Landing Page_files/4c13477c2b270832.strings.js.download"
+  },
+  {
+    "tag": "script",
+    "rel": null,
+    "as": null,
+    "url": "./Interiolance Landing Page_files/a6d618b67d38b489.en-IN.js.download"
+  },
+  {
+    "tag": "script",
+    "rel": null,
+    "as": null,
+    "url": "./Interiolance Landing Page_files/b3ca7422051369d0.js.download"
+  }
+]

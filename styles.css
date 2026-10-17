@@ -1,0 +1,170 @@
+:root {
+  color-scheme: light;
+  --cream: #fff7ef;
+  --button: #5b4f43;
+  --button-text: #fff7ef;
+  --title: #000000;
+  --serif: "Forum", "Times New Roman", Georgia, serif;
+  --sans: "Lato", "Open Sans", Arial, sans-serif;
+  --pill-width: 185.54px;
+  --pill-height: 40.45px;
+  --pill-gap: 8.77px;
+}
+
+* { box-sizing: border-box; }
+html { min-width: 320px; min-height: 100%; background: var(--cream); }
+body { margin: 0; min-width: 320px; min-height: 100%; color: var(--title); font-family: var(--sans); }
+a { color: inherit; }
+
+.landing {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  background: var(--cream);
+  padding: 0 20px 44px;
+}
+
+.landing-photo,
+.photo-wash {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.landing-photo {
+  object-fit: cover;
+  object-position: center center;
+}
+.photo-wash {
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(255,247,239,.12) 0%, rgba(255,247,239,.08) 42%, rgba(255,247,239,.18) 100%);
+  pointer-events: none;
+}
+
+.landing-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 12.96svh;
+}
+.logo-frame {
+  width: 138.6px;
+  height: 122.1px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 0 0 13.6px;
+}
+.brand-logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+.brand-name {
+  max-width: 100%;
+  margin: 0;
+  color: #000;
+  font-family: var(--sans);
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 28.3px;
+  letter-spacing: .235em;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(255,255,255,.12);
+}
+.tagline {
+  margin: 0;
+  color: #000;
+  font-family: var(--serif);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: center;
+}
+.link-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--pill-gap);
+  width: 100%;
+  margin-top: 11px;
+}
+.pill {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: min(var(--pill-width), 100%);
+  min-height: var(--pill-height);
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--button);
+  color: var(--button-text);
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: .085em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color .18s ease, transform .18s ease, box-shadow .18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.pill:hover {
+  background: #493e34;
+  box-shadow: 0 4px 12px rgba(35, 27, 20, .13);
+  transform: translateY(-1px);
+}
+.pill:active { transform: translateY(0); }
+.pill:focus-visible { outline: 2px solid #fff; outline-offset: 3px; box-shadow: 0 0 0 5px var(--button); }
+
+/* The Canva-exported mobile layout is a single portrait stack. Keep its
+   original 8-pill order and spacing on narrow screens. */
+@media (max-width: 699px) {
+  .landing { align-items: flex-start; padding: 0 20px 38px; }
+  .landing-photo { object-position: 50% center; }
+  .landing-content { padding-top: 12.96svh; }
+  .logo-frame { margin-bottom: 13.6px; }
+  .brand-name { font-size: clamp(19px, 5.1vw, 25px); letter-spacing: .22em; }
+  .tagline { font-size: 12px; }
+  .link-list { margin-top: 11px; }
+  .pill { max-width: 100%; }
+}
+
+/* The wide Canva view has room for a compact set of centred link pills. */
+@media (min-width: 700px) {
+  .landing { padding: 34px clamp(28px, 5vw, 72px) 44px; }
+  .landing-content { padding-top: 0; margin: auto; }
+  .logo-frame { width: 125px; height: 112px; margin-bottom: 10px; }
+  .brand-name { font-size: clamp(25px, 2.05vw, 31px); letter-spacing: .24em; line-height: 1.15; }
+  .tagline { margin-top: 3px; font-size: 13px; }
+  .link-list {
+    width: min(100%, 800px);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    justify-items: center;
+    gap: 10px 12px;
+    margin-top: 27px;
+  }
+  .pill { width: min(100%, 185.54px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+}
+.pill.is-pressed { background: #40362e; transform: scale(.99); }
