@@ -8,7 +8,7 @@
   <title>Portfolio Manager | INTERIOLANCE</title>
   <link rel="icon" type="image/png" href="assets/interiolance-mark.png">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="portfolio.css">
+  <link rel="stylesheet" href="portfolio.css?v=20261019-sort-controls-2">
 </head>
 <body class="admin-page">
   <header class="admin-header">
@@ -44,7 +44,7 @@
       <div class="admin-toolbar"><div><span class="panel-kicker">CONTENT MANAGEMENT</span><h2>Projects on the website</h2></div><button class="text-button" type="button" id="admin-sign-out">Sign out</button></div>
       <section class="admin-panel upload-panel">
         <div class="panel-heading"><div><span class="panel-kicker">ADD TO CAROUSEL</span><h2>Publish a project</h2></div><span class="image-count">Up to 10 shown publicly</span></div>
-        <p class="admin-muted">Use real project photos where possible. Newer uploads are shown first; the 10 latest published projects appear in the carousel.</p>
+        <p class="admin-muted">Use real project photos where possible. New projects are added to the end of your chosen order. You can reorder projects below at any time.</p>
         <form id="project-upload-form" class="admin-form">
           <div class="field full"><label for="project-image">Project photo <span class="required-mark">*</span></label><input id="project-image" name="image" type="file" accept="image/jpeg,image/png,image/webp" required><small>JPG, PNG or WebP · Maximum 8 MB. Landscape images around 4:3 work best.</small><div id="image-preview-wrap" class="image-preview-wrap" hidden><img id="image-preview" alt="Preview of selected project image"></div></div>
           <div class="field"><label for="project-title">Project title <span class="required-mark">*</span></label><input id="project-title" name="title" maxlength="90" placeholder="e.g. Warm, contemporary apartment" required></div>
@@ -56,6 +56,8 @@
       </section>
       <section class="admin-projects-section">
         <div class="admin-toolbar"><div><span class="panel-kicker">CURRENT PORTFOLIO</span><h2>Published projects <span class="project-total" id="project-total">0</span></h2></div><button class="text-button" type="button" id="refresh-projects">Refresh list ↻</button></div>
+        <p class="admin-muted admin-sort-help">Choose the order shown on the website using the Move up / Move down buttons, or drag a project row. The first project here appears first in the carousel.</p>
+        <p class="admin-status" id="sort-status" role="status" aria-live="polite"></p>
         <div id="admin-project-list" class="admin-project-list"><p class="admin-muted">Loading projects…</p></div>
         <p class="admin-small-note">Deleting a project removes it from the public carousel and attempts to delete its uploaded image.</p>
       </section>
@@ -80,9 +82,9 @@
     </form>
   </dialog>
 
-  <footer class="admin-footer"><span>INTERIOLANCE · Portfolio Manager</span><a href="PORTFOLIO-SETUP.md">Setup guide</a></footer>
+  <footer class="admin-footer"><span>INTERIOLANCE · Portfolio Manager</span><!-- <a href="PORTFOLIO-SETUP.md">Setup guide</a> --></footer>
 
   <script src="project-config.js"></script>
-  <script src="admin.js" defer></script>
+  <script src="admin.js?v=20261019-sort-controls-2" defer></script>
 </body>
 </html>

@@ -16,6 +16,7 @@
   const uploadButton = document.querySelector('#upload-submit');
   const projectList = document.querySelector('#admin-project-list');
   const projectTotal = document.querySelector('#project-total');
+  const sortStatus = document.querySelector('#sort-status');
   const editDialog = document.querySelector('#edit-project-dialog');
   const editForm = document.querySelector('#project-edit-form');
   const editStatus = document.querySelector('#edit-status');
@@ -26,6 +27,9 @@
   let selectedPreviewUrl = '';
   let editPreviewObjectUrl = '';
   let editingProject = null;
+  let loadedProjects = [];
+  let isReordering = false;
+  let draggedProjectId = null;
 
   function setStatus(node, message, isError) {
     if (!node) return;
@@ -97,38 +101,140 @@
   async function loadProjectList() {
     projectList.replaceChildren(make('p', 'admin-muted', 'Loading projects…'));
     try {
-      const rows = await request('/rest/v1/' + encodeURIComponent(table) + '?select=id,title,category,description,image_url,image_path,image_alt,created_at,is_published&order=created_at.desc');
-      projectList.replaceChildren();
-      projectTotal.textContent = String(Array.isArray(rows) ? rows.length : 0);
-      if (!Array.isArray(rows) || rows.length === 0) {
-        projectList.appendChild(make('div', 'admin-empty', 'No projects uploaded yet. Add your first completed project above.'));
+      const rows = await request('/rest/v1/' + encodeURIComponent(table) + '?select=id,title,category,description,image_url,image_path,image_alt,created_at,is_published,sort_order&order=sort_order.asc.nullslast,created_at.desc');
+      loadedProjects = Array.isArray(rows) ? rows : [];
+      projectTotal.textContent = String(loadedProjects.length);
+      if (!loadedProjects.length) {
+        projectList.replaceChildren(make('div', 'admin-empty', 'No projects uploaded yet. Add your first completed project above.'));
         return;
       }
-      rows.forEach((project) => {
-        const item = make('article', 'admin-project-row');
-        const image = make('img', 'admin-project-thumb');
-        image.src = project.image_url;
-        image.alt = project.image_alt || project.title || '';
-        image.loading = 'lazy';
-        const copy = make('div', 'admin-project-copy');
-        copy.append(make('span', 'admin-project-category', project.category || 'Interior design'), make('h3', '', project.title || 'Untitled project'), make('p', '', project.description || 'No description added'));
-        if (project.created_at) copy.appendChild(make('small', 'admin-project-date', 'Added ' + new Date(project.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })));
-        const actions = make('div', 'admin-project-actions');
-        const edit = make('button', 'admin-edit-button', 'Edit');
-        edit.type = 'button';
-        edit.addEventListener('click', () => openEditDialog(project));
-        const remove = make('button', 'admin-delete-button', 'Remove');
-        remove.type = 'button';
-        remove.addEventListener('click', () => deleteProject(project, remove));
-        actions.append(edit, remove);
-        item.append(image, copy, actions);
-        projectList.appendChild(item);
-      });
+      renderProjectList();
     } catch (error) {
       projectList.replaceChildren(make('p', 'admin-status is-error', 'Could not load projects: ' + (error.message || 'Check the Supabase connection and access policies.')));
     }
   }
 
+  function renderProjectList() {
+    projectList.replaceChildren();
+    loadedProjects.forEach((project, index) => {
+      const item = make('article', 'admin-project-row');
+      item.dataset.projectId = String(project.id);
+      item.draggable = !isReordering;
+      item.setAttribute('aria-label', (project.title || 'Untitled project') + ', position ' + (index + 1));
+      item.addEventListener('dragstart', event => {
+        if (isReordering) { event.preventDefault(); return; }
+        draggedProjectId = String(project.id);
+        item.classList.add('is-dragging');
+        if (event.dataTransfer) {
+          event.dataTransfer.effectAllowed = 'move';
+          event.dataTransfer.setData('text/plain', draggedProjectId);
+        }
+      });
+      item.addEventListener('dragover', event => {
+        if (!draggedProjectId || draggedProjectId === String(project.id) || isReordering) return;
+        event.preventDefault();
+        if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+        item.classList.add('is-drop-target');
+      });
+      item.addEventListener('dragleave', () => item.classList.remove('is-drop-target'));
+      item.addEventListener('drop', event => {
+        event.preventDefault();
+        item.classList.remove('is-drop-target');
+        const sourceId = draggedProjectId || (event.dataTransfer && event.dataTransfer.getData('text/plain'));
+        draggedProjectId = null;
+        if (!sourceId || sourceId === String(project.id)) return;
+        const reordered = loadedProjects.slice();
+        const from = reordered.findIndex(entry => String(entry.id) === String(sourceId));
+        const to = reordered.findIndex(entry => String(entry.id) === String(project.id));
+        if (from < 0 || to < 0) return;
+        const moved = reordered.splice(from, 1)[0];
+        reordered.splice(to, 0, moved);
+        saveProjectOrder(reordered);
+      });
+      item.addEventListener('dragend', () => {
+        draggedProjectId = null;
+        projectList.querySelectorAll('.is-dragging, .is-drop-target').forEach(node => node.classList.remove('is-dragging', 'is-drop-target'));
+      });
+
+      const image = make('img', 'admin-project-thumb');
+      image.src = project.image_url || '';
+      image.alt = project.image_alt || project.title || '';
+      image.loading = 'lazy';
+      const copy = make('div', 'admin-project-copy');
+      copy.append(make('span', 'admin-project-category', project.category || 'Interior design'), make('h3', '', project.title || 'Untitled project'), make('p', '', project.description || 'No description added'));
+      if (project.created_at) copy.appendChild(make('small', 'admin-project-date', 'Added ' + new Date(project.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })));
+
+      const actions = make('div', 'admin-project-actions');
+      const sorting = make('div', 'admin-sort-controls');
+      const moveUp = make('button', 'admin-sort-button', '↑ Move up');
+      moveUp.type = 'button';
+      moveUp.title = 'Move earlier in the carousel';
+      moveUp.setAttribute('aria-label', 'Move ' + (project.title || 'project') + ' earlier');
+      moveUp.disabled = isReordering || index === 0;
+      moveUp.addEventListener('click', () => moveProject(project.id, -1));
+      const moveDown = make('button', 'admin-sort-button', '↓ Move down');
+      moveDown.type = 'button';
+      moveDown.title = 'Move later in the carousel';
+      moveDown.setAttribute('aria-label', 'Move ' + (project.title || 'project') + ' later');
+      moveDown.disabled = isReordering || index === loadedProjects.length - 1;
+      moveDown.addEventListener('click', () => moveProject(project.id, 1));
+      sorting.append(moveUp, moveDown);
+
+      const position = make('span', 'admin-sort-position', 'Order ' + (index + 1));
+      position.title = 'Current website display order';
+      const edit = make('button', 'admin-edit-button', 'Edit');
+      edit.type = 'button';
+      edit.disabled = isReordering;
+      edit.addEventListener('click', () => openEditDialog(project));
+      const remove = make('button', 'admin-delete-button', 'Remove');
+      remove.type = 'button';
+      remove.disabled = isReordering;
+      remove.addEventListener('click', () => deleteProject(project, remove));
+      actions.append(position, sorting, edit, remove);
+      item.append(image, copy, actions);
+      projectList.appendChild(item);
+    });
+  }
+
+  function moveProject(projectId, offset) {
+    if (isReordering) return;
+    const reordered = loadedProjects.slice();
+    const from = reordered.findIndex(project => String(project.id) === String(projectId));
+    const to = from + offset;
+    if (from < 0 || to < 0 || to >= reordered.length) return;
+    const moved = reordered.splice(from, 1)[0];
+    reordered.splice(to, 0, moved);
+    saveProjectOrder(reordered);
+  }
+
+  async function saveProjectOrder(orderedProjects) {
+    if (isReordering) return;
+    isReordering = true;
+    setStatus(sortStatus, 'Saving display order…', false);
+    renderProjectList();
+    try {
+      // Persist the complete order as a simple zero-based sequence, avoiding gaps.
+      for (let index = 0; index < orderedProjects.length; index += 1) {
+        const project = orderedProjects[index];
+        const desiredOrder = index;
+        if (Number(project.sort_order) === desiredOrder) continue;
+        await request('/rest/v1/' + encodeURIComponent(table) + '?id=eq.' + encodeURIComponent(project.id), {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+          body: JSON.stringify({ sort_order: desiredOrder })
+        });
+      }
+      loadedProjects = orderedProjects.map((project, index) => ({ ...project, sort_order: index }));
+      setStatus(sortStatus, 'Order saved. The first project here appears first in the public carousel.', false);
+    } catch (error) {
+      setStatus(sortStatus, 'Could not save the new order: ' + (error.message || 'Check database permissions and the sort_order column.'), true);
+      // Re-read database state if a multi-row reorder was only partially saved.
+      await loadProjectList();
+    } finally {
+      isReordering = false;
+      renderProjectList();
+    }
+  }
 
   function openEditDialog(project) {
     editingProject = project;
@@ -299,12 +405,14 @@
         body: file
       });
       imageUrl = baseUrl + '/storage/v1/object/public/' + encodeURIComponent(bucket) + '/' + encodeURIComponent(imagePath);
+      const lastPositions = await request('/rest/v1/' + encodeURIComponent(table) + '?select=sort_order&order=sort_order.desc.nullslast&limit=1');
+      const nextSortOrder = Array.isArray(lastPositions) && lastPositions.length ? Number(lastPositions[0].sort_order || 0) + 1 : 0;
       await request('/rest/v1/' + encodeURIComponent(table), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ title, category, description, image_url: imageUrl, image_path: imagePath, image_alt: imageAlt, is_published: true })
+        body: JSON.stringify({ title, category, description, image_url: imageUrl, image_path: imagePath, image_alt: imageAlt, is_published: true, sort_order: nextSortOrder })
       });
-      setStatus(uploadStatus, 'Published. The project will appear in the carousel on the next page load.', false);
+      setStatus(uploadStatus, 'Published at the end of your current display order. You can move it into place below.', false);
       uploadForm.reset();
       document.querySelector('#image-preview-wrap').hidden = true;
       document.querySelector('#image-preview').removeAttribute('src');

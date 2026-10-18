@@ -25,7 +25,7 @@
   async function loadProjects() {
     if (!isConfigured) return { projects: sampleProjects, isSample: true, error: false };
     try {
-      const endpoint = config.url.replace(/\/$/, '') + '/rest/v1/' + encodeURIComponent(table) + '?select=id,title,category,description,image_url,image_alt,created_at,is_published&is_published=eq.true&order=created_at.desc&limit=10';
+      const endpoint = config.url.replace(/\/$/, '') + '/rest/v1/' + encodeURIComponent(table) + '?select=id,title,category,description,image_url,image_alt,created_at,is_published,sort_order&is_published=eq.true&order=sort_order.asc.nullslast,created_at.desc&limit=10';
       const response = await fetch(endpoint, { headers: apiHeaders() });
       if (!response.ok) throw new Error('Portfolio request failed (' + response.status + ').');
       const rows = await response.json();

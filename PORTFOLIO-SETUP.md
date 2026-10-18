@@ -1,6 +1,6 @@
 # INTERIOLANCE portfolio carousel and upload manager
 
-The homepage and **Our Work** page share a responsive carousel. It displays the latest 10 published projects, newest first. The client can add a project through `admin.html` without editing HTML, uploading assets to GitHub, or making a code commit.
+The homepage and **Our Work** page share a responsive carousel. It displays up to 10 published projects in the manually saved order. In `admin.html`, the client can drag projects into position or use the up/down arrows; the first row is the first project shown publicly. New uploads are appended to the end until reordered. No HTML editing or code commit is needed for routine portfolio updates.
 
 ## One-time setup (Supabase)
 
@@ -12,6 +12,25 @@ The current site is static hosting, so it needs a small hosted service to store 
 4. In **Storage**, create a bucket named `project-images`. Set it to **Public**, set the file size limit to **8 MB**, and allow `image/jpeg`, `image/png`, and `image/webp`.
 5. In **Authentication → Users**, create an account for the site administrator. Keep public sign-ups disabled; the manager page only offers sign-in and doesn't expose a registration form.
 6. Publish the updated website. Open `admin.html`, sign in with the administrator account, and upload the actual completed project photos. The carousel updates from the database on the next page load.
+
+## Updating an already-configured Supabase project
+
+If the portfolio already works and you are deploying this manual-sort update, run this one-time migration in **Supabase → SQL Editor** before publishing the updated website. It adds the ordering column and initially places existing projects in their current newest-first order. It does not delete project rows or image files.
+
+```sql
+alter table public.projects add column if not exists sort_order integer;
+with ranked_projects as (
+  select id, row_number() over (order by created_at desc nulls last, id) - 1 as position
+  from public.projects
+)
+update public.projects p
+set sort_order = ranked_projects.position
+from ranked_projects
+where p.id = ranked_projects.id and p.sort_order is null;
+alter table public.projects alter column sort_order set default 0;
+update public.projects set sort_order = 0 where sort_order is null;
+alter table public.projects alter column sort_order set not null;
+```
 
 ## SQL schema and access policies
 
@@ -27,8 +46,23 @@ create table if not exists public.projects (
   image_path text not null,
   image_alt text not null default '',
   is_published boolean not null default true,
+  sort_order integer not null default 0,
   created_at timestamptz not null default now()
 );
+
+-- Migration for an existing projects table: add and backfill the manual display order.
+alter table public.projects add column if not exists sort_order integer;
+with ranked_projects as (
+  select id, row_number() over (order by created_at desc nulls last, id) - 1 as position
+  from public.projects
+)
+update public.projects p
+set sort_order = ranked_projects.position
+from ranked_projects
+where p.id = ranked_projects.id and p.sort_order is null;
+alter table public.projects alter column sort_order set default 0;
+update public.projects set sort_order = 0 where sort_order is null;
+alter table public.projects alter column sort_order set not null;
 
 alter table public.projects enable row level security;
 grant select on public.projects to anon, authenticated;
@@ -79,10 +113,15 @@ create policy "Signed-in admins can delete portfolio images"
 
 > Security note: these write policies treat Supabase-authenticated users as portfolio administrators. Do not create public signup accounts for this project. If you need several users with different permissions, replace these policies with an explicit admin-role check.
 
+## If the order controls do not appear
+
+The manager uses versioned asset URLs so browsers re-fetch the updated JavaScript and CSS after deployment. After replacing the files and pushing the commit, reload `admin.html`. The list should show an **Order** number and **Move up** / **Move down** buttons beside each project. If an order save fails, read the status message below the list; the administrator must have update permission for `public.projects`, and the `sort_order` column must exist.
+
 ## How the manager works
 
 - Every upload creates a database record and stores the image in Supabase Storage.
-- The public carousel loads at most 10 published projects in newest-first order.
+- The public carousel loads at most 10 published projects sorted by `sort_order` (ascending). The first row in the manager is the first card shown publicly.
+- You can drag and drop rows or use the up/down arrow buttons to set the order. Saving updates `sort_order` in Supabase; no website code commit is needed. New uploads are appended after the current last project.
 - Uploaded projects replace the sample inspiration cards automatically; no code change is needed for later uploads.
 - The manager can edit a project's title, category, description, accessibility text, and image directly in the browser. A replacement image is uploaded first; after the project record is updated, the previous image is removed on a best-effort basis.
 - The manager can also remove projects. This deletes the project record and attempts to remove its image file as well.

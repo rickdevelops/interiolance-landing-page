@@ -55,6 +55,6 @@ These direct links are based on the contact details in the original website file
 The homepage, `projects.html`, and `landing-page/index.html` share the latest-project carousel. The portfolio manager is available at `admin.html`. To enable live uploads (so the client does not need to edit code for each project), follow [`PORTFOLIO-SETUP.md`](PORTFOLIO-SETUP.md) to connect a Supabase project once, then sign in to `admin.html` and upload project photos from the browser. Until the connection is configured and verified project photos are uploaded, clearly labelled sample inspiration images are displayed.
 
 
-### Edit existing projects in the browser
+### Edit and manually sort projects in the browser
 
-Open `admin.html` and sign in with the administrator account. In **Published projects**, choose **Edit** to update a project's title, category, description, image accessibility text, or optionally replace its photo. Choose **Save changes** to update the live portfolio; no code edit or Git commit is needed for routine content changes.
+Open `admin.html` and sign in with the administrator account. In **Published projects**, choose **Edit** to update a project's title, category, description, image accessibility text, or optionally replace its photo. Choose **Save changes** to update the live portfolio. Drag project rows or use the up/down arrows to control the public carousel order. The first row is shown first, and new projects are added to the end. For an already-configured Supabase database, run the one-time `sort_order` migration in `PORTFOLIO-SETUP.md` before deploying this update; no code edit or Git commit is needed for routine content changes.

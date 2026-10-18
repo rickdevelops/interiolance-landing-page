@@ -32,3 +32,7 @@ Before committing, check that `git status --short` lists both image files as add
 
 - `https://rickdevelops.github.io/interiolance-landing-page/landing-page/assets/original/hero.jpg`
 - `https://rickdevelops.github.io/interiolance-landing-page/landing-page/assets/original/logo.png`
+
+## Portfolio carousel management
+
+The homepage and Our Work page display projects in the order stored in Supabase. Use `admin.html` to add, edit, remove, or drag-sort portfolio entries; accessible up/down buttons are also available. The first row is displayed first in the carousel, and new uploads are appended to the end. When upgrading an existing Supabase project, run the `sort_order` migration shown in `PORTFOLIO-SETUP.md` once before publishing these files.
