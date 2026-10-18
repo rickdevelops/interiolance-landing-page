@@ -61,6 +61,25 @@
       </section>
     </div>
   </main>
+
+  <dialog class="admin-edit-dialog" id="edit-project-dialog" aria-labelledby="edit-project-heading">
+    <div class="edit-dialog-header">
+      <div><span class="panel-kicker">EDIT PROJECT</span><h2 id="edit-project-heading">Update project details</h2></div>
+      <button class="dialog-close" type="button" id="edit-dialog-close" aria-label="Close edit project form">×</button>
+    </div>
+    <p class="admin-muted">Update the project information or choose a replacement image. Save changes to publish them on the website.</p>
+    <form id="project-edit-form" class="admin-form">
+      <input id="edit-project-id" name="id" type="hidden">
+      <div class="field full"><label for="edit-project-image">Replace project photo</label><input id="edit-project-image" name="image" type="file" accept="image/jpeg,image/png,image/webp"><small>Optional. JPG, PNG or WebP · Maximum 8 MB. Leave empty to keep the current image.</small><div id="edit-image-preview-wrap" class="image-preview-wrap"><img id="edit-image-preview" alt="Current project image preview"></div></div>
+      <div class="field"><label for="edit-project-title">Project title <span class="required-mark">*</span></label><input id="edit-project-title" name="title" maxlength="90" required></div>
+      <div class="field"><label for="edit-project-category">Room or category</label><select id="edit-project-category" name="category"><option>Full-home interiors</option><option>Living spaces</option><option>Bedrooms</option><option>Dining spaces</option><option>Kitchens</option><option>Bathrooms</option><option>Styling &amp; details</option><option>Commercial interiors</option></select></div>
+      <div class="field full"><label for="edit-project-description">Short description</label><textarea id="edit-project-description" name="description" rows="3" maxlength="240"></textarea></div>
+      <div class="field full"><label for="edit-project-alt">Image description for accessibility</label><input id="edit-project-alt" name="alt" maxlength="180" placeholder="Briefly describe the room and its main features"></div>
+      <div class="field full edit-dialog-actions"><button class="btn admin-submit" id="edit-save-button" type="submit">Save changes <span aria-hidden="true">↗</span></button><button class="text-button edit-cancel-button" id="edit-dialog-cancel" type="button">Cancel</button></div>
+      <p class="admin-status edit-form-status field full" id="edit-status" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
   <footer class="admin-footer"><span>INTERIOLANCE · Portfolio Manager</span><a href="PORTFOLIO-SETUP.md">Setup guide</a></footer>
 
   <script src="project-config.js"></script>

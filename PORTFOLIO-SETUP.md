@@ -84,7 +84,8 @@ create policy "Signed-in admins can delete portfolio images"
 - Every upload creates a database record and stores the image in Supabase Storage.
 - The public carousel loads at most 10 published projects in newest-first order.
 - Uploaded projects replace the sample inspiration cards automatically; no code change is needed for later uploads.
-- The manager can remove projects. This deletes the project record and attempts to remove its image file as well.
+- The manager can edit a project's title, category, description, accessibility text, and image directly in the browser. A replacement image is uploaded first; after the project record is updated, the previous image is removed on a best-effort basis.
+- The manager can also remove projects. This deletes the project record and attempts to remove its image file as well.
 - Until Supabase is configured and actual project photos are uploaded, the website uses clearly labelled sample inspiration imagery. Those samples are not presented as completed client projects.
 
 ## Local preview

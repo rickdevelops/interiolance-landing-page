@@ -16,8 +16,16 @@
   const uploadButton = document.querySelector('#upload-submit');
   const projectList = document.querySelector('#admin-project-list');
   const projectTotal = document.querySelector('#project-total');
+  const editDialog = document.querySelector('#edit-project-dialog');
+  const editForm = document.querySelector('#project-edit-form');
+  const editStatus = document.querySelector('#edit-status');
+  const editSaveButton = document.querySelector('#edit-save-button');
+  const editImageInput = document.querySelector('#edit-project-image');
+  const editImagePreview = document.querySelector('#edit-image-preview');
   let accessToken = sessionStorage.getItem('interiolance_admin_access_token') || '';
   let selectedPreviewUrl = '';
+  let editPreviewObjectUrl = '';
+  let editingProject = null;
 
   function setStatus(node, message, isError) {
     if (!node) return;
@@ -105,14 +113,154 @@
         const copy = make('div', 'admin-project-copy');
         copy.append(make('span', 'admin-project-category', project.category || 'Interior design'), make('h3', '', project.title || 'Untitled project'), make('p', '', project.description || 'No description added'));
         if (project.created_at) copy.appendChild(make('small', 'admin-project-date', 'Added ' + new Date(project.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })));
+        const actions = make('div', 'admin-project-actions');
+        const edit = make('button', 'admin-edit-button', 'Edit');
+        edit.type = 'button';
+        edit.addEventListener('click', () => openEditDialog(project));
         const remove = make('button', 'admin-delete-button', 'Remove');
         remove.type = 'button';
         remove.addEventListener('click', () => deleteProject(project, remove));
-        item.append(image, copy, remove);
+        actions.append(edit, remove);
+        item.append(image, copy, actions);
         projectList.appendChild(item);
       });
     } catch (error) {
       projectList.replaceChildren(make('p', 'admin-status is-error', 'Could not load projects: ' + (error.message || 'Check the Supabase connection and access policies.')));
+    }
+  }
+
+
+  function openEditDialog(project) {
+    editingProject = project;
+    editForm.reset();
+    editForm.elements.id.value = project.id;
+    editForm.elements.title.value = project.title || '';
+    editForm.elements.description.value = project.description || '';
+    editForm.elements.alt.value = project.image_alt || '';
+
+    const categorySelect = editForm.elements.category;
+    const existingOption = Array.from(categorySelect.options).find(option => option.value === (project.category || ''));
+    if (!existingOption && project.category) {
+      const customOption = document.createElement('option');
+      customOption.value = project.category;
+      customOption.textContent = project.category;
+      categorySelect.appendChild(customOption);
+    }
+    categorySelect.value = project.category || 'Full-home interiors';
+
+    clearEditPreviewObjectUrl();
+    editImagePreview.src = project.image_url || '';
+    editImagePreview.alt = project.image_alt || project.title || 'Current project image';
+    setStatus(editStatus, '', false);
+    editSaveButton.disabled = false;
+    editDialog.showModal();
+  }
+
+  function clearEditPreviewObjectUrl() {
+    if (editPreviewObjectUrl) URL.revokeObjectURL(editPreviewObjectUrl);
+    editPreviewObjectUrl = '';
+  }
+
+  function showEditPreview(file) {
+    clearEditPreviewObjectUrl();
+    if (file) {
+      editPreviewObjectUrl = URL.createObjectURL(file);
+      editImagePreview.src = editPreviewObjectUrl;
+    } else if (editingProject && editingProject.image_url) {
+      editImagePreview.src = editingProject.image_url;
+    } else {
+      editImagePreview.removeAttribute('src');
+    }
+  }
+
+  function validateImage(file) {
+    if (!file) return '';
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) return 'Use a JPG, PNG or WebP image.';
+    if (file.size > 8 * 1024 * 1024) return 'That image is larger than 8 MB. Please resize it and try again.';
+    return '';
+  }
+
+  async function uploadImageFile(file, title) {
+    const extension = file.type === 'image/jpeg' ? 'jpg' : file.type === 'image/png' ? 'png' : 'webp';
+    const uniqueId = window.crypto && typeof window.crypto.randomUUID === 'function' ? window.crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2, 10);
+    const imagePath = Date.now() + '-' + slugify(title) + '-' + uniqueId + '.' + extension;
+    await request('/storage/v1/object/' + encodeURIComponent(bucket) + '/' + encodeURIComponent(imagePath), {
+      method: 'POST',
+      headers: { 'Content-Type': file.type, 'x-upsert': 'false' },
+      body: file
+    });
+    return {
+      imagePath,
+      imageUrl: baseUrl + '/storage/v1/object/public/' + encodeURIComponent(bucket) + '/' + encodeURIComponent(imagePath)
+    };
+  }
+
+  async function saveEditedProject(event) {
+    event.preventDefault();
+    if (!editingProject) return;
+
+    const fields = new FormData(editForm);
+    const file = fields.get('image');
+    const validationError = validateImage(file instanceof File && file.size ? file : null);
+    if (validationError) {
+      setStatus(editStatus, validationError, true);
+      return;
+    }
+
+    const title = String(fields.get('title') || '').trim();
+    if (!title) {
+      setStatus(editStatus, 'Project title is required.', true);
+      return;
+    }
+
+    editSaveButton.disabled = true;
+    editDialog.querySelectorAll('button[type="button"]').forEach(button => { button.disabled = true; });
+    setStatus(editStatus, file instanceof File && file.size ? 'Uploading replacement image and saving changes…' : 'Saving project changes…', false);
+    let uploadedImagePath = '';
+    let databaseUpdated = false;
+    try {
+      const category = String(fields.get('category') || 'Full-home interiors').trim();
+      const description = String(fields.get('description') || '').trim();
+      const imageAlt = String(fields.get('alt') || title).trim();
+      const update = { title, category, description, image_alt: imageAlt };
+
+      if (file instanceof File && file.size) {
+        const uploaded = await uploadImageFile(file, title);
+        uploadedImagePath = uploaded.imagePath;
+        update.image_url = uploaded.imageUrl;
+        update.image_path = uploaded.imagePath;
+      }
+
+      await request('/rest/v1/' + encodeURIComponent(table) + '?id=eq.' + encodeURIComponent(editingProject.id), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        body: JSON.stringify(update)
+      });
+      databaseUpdated = true;
+
+      let cleanupWarning = '';
+      if (uploadedImagePath && editingProject.image_path && editingProject.image_path !== uploadedImagePath) {
+        try {
+          await request('/storage/v1/object/' + encodeURIComponent(bucket) + '/' + encodeURIComponent(editingProject.image_path), { method: 'DELETE' });
+        } catch (_) {
+          cleanupWarning = ' The project was updated, but the previous image could not be deleted automatically.';
+        }
+      }
+
+      setStatus(editStatus, 'Changes saved. The public portfolio will show the updated project on its next load.' + cleanupWarning, false);
+      await loadProjectList();
+      if (cleanupWarning) window.alert(cleanupWarning.trim());
+      window.setTimeout(() => {
+        if (editDialog.open) editDialog.close();
+      }, 900);
+    } catch (error) {
+      if (uploadedImagePath && !databaseUpdated) {
+        try { await request('/storage/v1/object/' + encodeURIComponent(bucket) + '/' + encodeURIComponent(uploadedImagePath), { method: 'DELETE' }); } catch (_) { /* best-effort cleanup */ }
+      }
+      setStatus(editStatus, 'Could not save changes: ' + (error.message || 'Check your connection and access policies.'), true);
+    } finally {
+      editSaveButton.disabled = false;
+      editDialog.querySelectorAll('button[type="button"]').forEach(button => { button.disabled = false; });
     }
   }
 
@@ -211,6 +359,17 @@
   });
   document.querySelector('#refresh-projects').addEventListener('click', loadProjectList);
   document.querySelector('#project-image').addEventListener('change', event => showPreview(event.target.files && event.target.files[0]));
+  editImageInput.addEventListener('change', event => showEditPreview(event.target.files && event.target.files[0]));
+  editForm.addEventListener('submit', saveEditedProject);
+  document.querySelector('#edit-dialog-close').addEventListener('click', () => editDialog.close());
+  document.querySelector('#edit-dialog-cancel').addEventListener('click', () => editDialog.close());
+  editDialog.addEventListener('cancel', event => {
+    if (editSaveButton.disabled) event.preventDefault();
+  });
+  editDialog.addEventListener('close', () => {
+    clearEditPreviewObjectUrl();
+    editingProject = null;
+  });
 
   if (!configured) {
     setupPanel.hidden = false;
