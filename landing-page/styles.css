@@ -191,3 +191,27 @@ a { color: inherit; }
 .discover-contact { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding: 13px 15px; background: #5b4f43; color: #fff7ef; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700; }
 @keyframes panel-in { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .site-discovery *, .site-discovery *::before, .site-discovery *::after { animation: none !important; transition: none !important; } }
+
+/* Shared project-carousel tokens, without changing the original Canva-style top panel. */
+:root {
+  --ink: #292520;
+  --muted: #71675d;
+  --taupe: #5e5145;
+  --taupe-dark: #43392f;
+  --sand: #e9dfd2;
+  --paper: #fffdfa;
+  --line: #e6ded4;
+  --white: #fff;
+  --accent: #a88b70;
+  --shadow: 0 20px 55px rgba(46,35,24,.12);
+  --radius: 5px;
+}
+.landing-projects { background: #fffaf4; color: #292520; padding: clamp(48px, 8vw, 86px) 20px 70px; }
+.landing-projects-inner { width: min(1120px, 100%); margin: 0 auto; }
+.landing-projects-eyebrow { margin: 0 0 12px; color: #997a60; font-size: 10px; letter-spacing: .2em; font-weight: 700; text-align: center; }
+.landing-projects-eyebrow:before { content: ""; display: inline-block; width: 24px; height: 1px; margin: 0 10px 3px 0; background: currentColor; }
+.landing-projects h2 { max-width: 660px; margin: 0 auto 13px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(30px, 4.8vw, 45px); font-weight: 400; line-height: 1.15; letter-spacing: -.035em; text-align: center; }
+.landing-projects-intro { max-width: 625px; margin: 0 auto 31px; color: #726459; font-size: 14px; line-height: 1.75; text-align: center; }
+.landing-projects-cta { display: flex; justify-content: center; align-items: center; gap: 13px; width: max-content; max-width: 100%; margin: 30px auto 0; color: #5b4f43; border-bottom: 1px solid #b8a38e; padding-bottom: 7px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.landing-projects-cta span { font-size: 18px; }
+@media(max-width:560px) { .landing-projects { padding: 44px 16px 54px; } .landing-projects-intro { font-size: 13px; margin-bottom: 25px; } }

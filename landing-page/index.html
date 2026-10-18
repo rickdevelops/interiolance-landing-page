@@ -36,6 +36,7 @@
   <link rel="preload" as="image" href="assets/original/hero.jpg">
   <link rel="preload" as="image" href="assets/original/logo.png">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="../portfolio.css">
 </head>
 <body>
   <main class="landing" id="top" aria-label="Interiolance digital links">
@@ -78,6 +79,18 @@
       </div>
     </div>
   </main>
+  <section class="landing-projects" id="latest-projects" aria-labelledby="landing-projects-title">
+    <div class="landing-projects-inner">
+      <p class="landing-projects-eyebrow">LATEST FROM THE STUDIO</p>
+      <h2 id="landing-projects-title">Recent spaces, thoughtfully designed.</h2>
+      <p class="landing-projects-intro">A closer look at interiors, considered details and design choices. The studio can add new work through the Portfolio Manager, without editing this page.</p>
+      <div id="landing-project-carousel" data-project-carousel aria-label="Latest INTERIOLANCE projects"></div>
+      <p class="portfolio-note" data-portfolio-note data-for="landing-project-carousel" hidden>Sample images are shown until completed projects are uploaded through the Portfolio Manager.</p>
+      <a class="landing-projects-cta" href="../projects.html#latest-projects">View the full portfolio <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+  <script src="../project-config.js"></script>
+  <script src="../projects-carousel.js"></script>
   <script src="script.js" defer></script>
 </body>
 </html>

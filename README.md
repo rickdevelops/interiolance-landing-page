@@ -49,3 +49,7 @@ These direct links are based on the contact details in the original website file
 
 
 - `landing-page/index.html` — quick links page. Public route: `/landing-page` (clean URL; no need to append `index.html`).
+
+## Latest-project carousel and uploads
+
+The homepage, `projects.html`, and `landing-page/index.html` share the latest-project carousel. The portfolio manager is available at `admin.html`. To enable live uploads (so the client does not need to edit code for each project), follow [`PORTFOLIO-SETUP.md`](PORTFOLIO-SETUP.md) to connect a Supabase project once, then sign in to `admin.html` and upload project photos from the browser. Until the connection is configured and verified project photos are uploaded, clearly labelled sample inspiration images are displayed.

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#5e5145">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Portfolio Manager | INTERIOLANCE</title>
+  <link rel="icon" type="image/png" href="assets/interiolance-mark.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="portfolio.css">
+</head>
+<body class="admin-page">
+  <header class="admin-header">
+    <a class="admin-brand" href="index.html" aria-label="INTERIOLANCE home"><img src="assets/interiolance-logo.png" alt="INTERIOLANCE"></a>
+    <div><span class="admin-header-label">STUDIO TOOLS</span><a class="admin-back-link" href="index.html">View website ↗</a></div>
+  </header>
+  <main class="admin-main">
+    <div class="admin-intro">
+      <span class="eyebrow">Portfolio manager</span>
+      <h1>Keep your latest work in view.</h1>
+      <p>Add a finished project once. It will appear in the website carousel automatically—no code edits or commits needed.</p>
+    </div>
+
+    <section class="admin-panel setup-panel" id="portfolio-setup-required" hidden>
+      <span class="setup-kicker">ONE-TIME SETUP REQUIRED</span>
+      <h2>Connect the portfolio storage</h2>
+      <p>The site is ready for live uploads, but its database URL and public key have not been added yet.</p>
+      <p>Follow the steps in <strong>PORTFOLIO-SETUP.md</strong>, then update <code>project-config.js</code> once and publish those setup changes. After that, project uploads are managed here.</p>
+    </section>
+
+    <section class="admin-panel" id="admin-login-panel" hidden>
+      <div class="panel-heading"><div><span class="panel-kicker">ADMIN ACCESS</span><h2>Sign in to the studio</h2></div></div>
+      <form id="admin-login-form" class="admin-form">
+        <div class="field"><label for="admin-email">Email address</label><input id="admin-email" name="email" type="email" autocomplete="username" required></div>
+        <div class="field"><label for="admin-password">Password</label><input id="admin-password" name="password" type="password" autocomplete="current-password" required></div>
+        <button class="btn admin-submit" type="submit">Sign in <span aria-hidden="true">→</span></button>
+      </form>
+      <p class="admin-status" id="login-status" role="status" aria-live="polite"></p>
+      <p class="admin-small-note">Administrator accounts are created in the Supabase dashboard. Registration is intentionally not available on this page.</p>
+    </section>
+
+    <div id="portfolio-manager" hidden>
+      <div class="admin-toolbar"><div><span class="panel-kicker">CONTENT MANAGEMENT</span><h2>Projects on the website</h2></div><button class="text-button" type="button" id="admin-sign-out">Sign out</button></div>
+      <section class="admin-panel upload-panel">
+        <div class="panel-heading"><div><span class="panel-kicker">ADD TO CAROUSEL</span><h2>Publish a project</h2></div><span class="image-count">Up to 10 shown publicly</span></div>
+        <p class="admin-muted">Use real project photos where possible. Newer uploads are shown first; the 10 latest published projects appear in the carousel.</p>
+        <form id="project-upload-form" class="admin-form">
+          <div class="field full"><label for="project-image">Project photo <span class="required-mark">*</span></label><input id="project-image" name="image" type="file" accept="image/jpeg,image/png,image/webp" required><small>JPG, PNG or WebP · Maximum 8 MB. Landscape images around 4:3 work best.</small><div id="image-preview-wrap" class="image-preview-wrap" hidden><img id="image-preview" alt="Preview of selected project image"></div></div>
+          <div class="field"><label for="project-title">Project title <span class="required-mark">*</span></label><input id="project-title" name="title" maxlength="90" placeholder="e.g. Warm, contemporary apartment" required></div>
+          <div class="field"><label for="project-category">Room or category</label><select id="project-category" name="category"><option>Full-home interiors</option><option>Living spaces</option><option>Bedrooms</option><option>Dining spaces</option><option>Kitchens</option><option>Bathrooms</option><option>Styling & details</option><option>Commercial interiors</option></select></div>
+          <div class="field full"><label for="project-description">Short description</label><textarea id="project-description" name="description" rows="3" maxlength="240" placeholder="A sentence about the brief, palette or design details."></textarea></div>
+          <div class="field full"><label for="project-alt">Image description for accessibility</label><input id="project-alt" name="alt" maxlength="180" placeholder="Briefly describe the room and its main features"></div>
+          <div class="field full"><button class="btn admin-submit" id="upload-submit" type="submit">Upload & publish project <span aria-hidden="true">↗</span></button><p class="admin-status" id="upload-status" role="status" aria-live="polite"></p></div>
+        </form>
+      </section>
+      <section class="admin-projects-section">
+        <div class="admin-toolbar"><div><span class="panel-kicker">CURRENT PORTFOLIO</span><h2>Published projects <span class="project-total" id="project-total">0</span></h2></div><button class="text-button" type="button" id="refresh-projects">Refresh list ↻</button></div>
+        <div id="admin-project-list" class="admin-project-list"><p class="admin-muted">Loading projects…</p></div>
+        <p class="admin-small-note">Deleting a project removes it from the public carousel and attempts to delete its uploaded image.</p>
+      </section>
+    </div>
+  </main>
+  <footer class="admin-footer"><span>INTERIOLANCE · Portfolio Manager</span><a href="PORTFOLIO-SETUP.md">Setup guide</a></footer>
+
+  <script src="project-config.js"></script>
+  <script src="admin.js" defer></script>
+</body>
+</html>
